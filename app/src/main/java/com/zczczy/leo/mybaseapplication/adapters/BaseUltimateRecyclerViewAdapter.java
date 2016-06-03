@@ -33,30 +33,19 @@ import jp.wasabeef.recyclerview.internal.ViewHelper;
 @EBean
 public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAdapter<BaseUltimateViewHolder> implements SwipeItemManagerInterface {
 
-    protected SwipeItemManagerImpl mItemManger = new SwipeItemManagerImpl(this);
-
-    private List<T> items = new ArrayList<>();
-
-    private int total = 0;
-
-    private boolean isFirstOnly = true;
-
-    private Interpolator mInterpolator = new LinearInterpolator();
-
-    private int mDuration = 300;
-
-    private int mLastPosition = 5;
-
-    private OnItemClickListener<T> onItemClickListener;
-
-    private OnItemLongClickListener<T> onItemLongClickListener;
-
     public VerticalAndHorizontal verticalAndHorizontal;
-
+    protected SwipeItemManagerImpl mItemManger = new SwipeItemManagerImpl(this);
     @Bean
     OttoBus bus;
-
     boolean isRefresh;
+    private List<T> items = new ArrayList<>();
+    private int total = 0;
+    private boolean isFirstOnly = true;
+    private Interpolator mInterpolator = new LinearInterpolator();
+    private int mDuration = 300;
+    private int mLastPosition = 5;
+    private OnItemClickListener<T> onItemClickListener;
+    private OnItemLongClickListener<T> onItemLongClickListener;
 
     /**
      * 获取更多的数据
@@ -333,29 +322,6 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
-
-    public interface OnItemClickListener<T> {
-
-        void onItemClick(RecyclerView.ViewHolder viewHolder, T obj, int position);
-
-        void onHeaderClick(RecyclerView.ViewHolder viewHolder, int position);
-
-    }
-
-    public interface OnItemLongClickListener<T> {
-
-        void onItemLongClick(RecyclerView.ViewHolder viewHolder, T obj, int position);
-
-        void onHeaderLongClick(RecyclerView.ViewHolder viewHolder, int position);
-
-    }
-
-    public enum VerticalAndHorizontal {
-        Vertical,
-        Horizontal
-    }
-
-
     public List<T> getItems() {
         return items;
     }
@@ -386,5 +352,26 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
         items.clear();
         total = 0;
         notifyItemRangeRemoved(customHeaderView != null ? 1 : 0, size);
+    }
+
+    public enum VerticalAndHorizontal {
+        Vertical,
+        Horizontal
+    }
+
+    public interface OnItemClickListener<T> {
+
+        void onItemClick(RecyclerView.ViewHolder viewHolder, T obj, int position);
+
+        void onHeaderClick(RecyclerView.ViewHolder viewHolder, int position);
+
+    }
+
+    public interface OnItemLongClickListener<T> {
+
+        void onItemLongClick(RecyclerView.ViewHolder viewHolder, T obj, int position);
+
+        void onHeaderLongClick(RecyclerView.ViewHolder viewHolder, int position);
+
     }
 }
