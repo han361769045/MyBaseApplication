@@ -29,8 +29,9 @@ public class TestAdapter extends BaseUltimateRecyclerViewAdapter<TestModel> {
         result.Data = new PagerResult<>();
         result.Data.ListData = new ArrayList<>();
         result.Data.RowCount = 1000;
-        for (int i = (pageIndex - 1) * pageSize; i < pageSize*pageIndex; i++) {
+        for (int i = (pageIndex - 1) * pageSize; i < pageSize * pageIndex; i++) {
             TestModel testModel = new TestModel();
+            testModel.id = i;
             testModel.name = "测试" + i;
             result.Data.ListData.add(testModel);
         }
@@ -64,5 +65,14 @@ public class TestAdapter extends BaseUltimateRecyclerViewAdapter<TestModel> {
     @Override
     public void onBindHeaderViewHolder(RecyclerView.ViewHolder holder, int position) {
 
+    }
+
+    @Override
+    public long getItemId(int position) {
+        // return position; <- this is not stable!
+
+        // should returns stable value. IDs have to be kept the same value
+        // even after its position has been changed.
+        return getItems().get(position).id;
     }
 }

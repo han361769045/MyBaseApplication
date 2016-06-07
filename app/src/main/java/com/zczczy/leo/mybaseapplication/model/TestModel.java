@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class TestModel implements Serializable {
 
+    public int id;
     public String name;
 
 }

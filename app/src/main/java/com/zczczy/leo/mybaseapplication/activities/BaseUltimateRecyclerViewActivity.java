@@ -60,17 +60,22 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     @AfterViews
     void afterRecyclerView() {
         bus.register(this);
-        ultimateRecyclerView.setHasFixedSize(true);
+        ultimateRecyclerView.setHasFixedSize(false);
         linearLayoutManager = new LinearLayoutManager(this);
         gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
-        //设置 layoutManger
-        verticalItem();
-        //设置视差header
-        enableParallaxHeader();
+
         //设置空视图
         enableEmptyViewPolicy();
+
         //启用加载更多
         enableLoadMore();
+        //设置 layoutManger
+        verticalItem();
+
+        //设置视差header
+//        enableParallaxHeader();
+
+
         //获取数据
         afterLoadMore();
         //启用刷新
@@ -83,6 +88,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         paint.setColor(line_color);
         ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).margin(35).paint(paint).build());
 //        ultimateRecyclerView.setItemViewCacheSize();
+
     }
 
     //线性布局
@@ -140,6 +146,8 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 isRefresh = true;
                 pageIndex = 1;
+                ultimateRecyclerView.setRefreshing(false);
+                ultimateRecyclerView.disableLoadmore();
                 afterLoadMore();
             }
         });
@@ -152,9 +160,11 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
             ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
             isRefresh = false;
             if (myAdapter.getItems().size() < myAdapter.getTotal()) {
-                ultimateRecyclerView.reenableLoadmore();
+                if (!ultimateRecyclerView.isLoadMoreEnabled())
+                    ultimateRecyclerView.reenableLoadmore();
             } else {
-                ultimateRecyclerView.disableLoadmore();
+                if (ultimateRecyclerView.isLoadMoreEnabled())
+                    ultimateRecyclerView.disableLoadmore();
             }
         } else if (pageIndex == 1) {
             linearLayoutManager.scrollToPosition(0);
@@ -176,13 +186,13 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
      * 设置 启用 ParallaxHeader（视差header）
      */
     void enableParallaxHeader() {
-//        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
-//        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
-//            @Override
-//            public void onParallaxScroll(float percentage, float offset, View parallax) {
-//
-//            }
-//        });
+        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
+        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
+            @Override
+            public void onParallaxScroll(float percentage, float offset, View parallax) {
+
+            }
+        });
     }
 
     void enableLoadMore() {
@@ -197,7 +207,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 //                    AndroidTool.showToast(BaseUltimateRecyclerViewActivity.this, "没有更多的数据了！~");
                     Toast.makeText(BaseUltimateRecyclerViewActivity.this, "没有更多的数据了", Toast.LENGTH_SHORT).show();
                     ultimateRecyclerView.disableLoadmore();
-                    myAdapter.notifyItemRemoved(itemsCount > 0 ? itemsCount - 1 : 0);
+//                    myAdapter.notifyItemRemoved(itemsCount > 0 ? itemsCount - 1 : 0);
                 } else {
                     pageIndex++;
                     afterLoadMore();

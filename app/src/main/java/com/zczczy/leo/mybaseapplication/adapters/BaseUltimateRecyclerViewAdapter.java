@@ -86,12 +86,12 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     @Override
     public BaseUltimateViewHolder newFooterHolder(View view) {
-        return null;
+        return new BaseUltimateViewHolder(view);
     }
 
     @Override
     public BaseUltimateViewHolder newHeaderHolder(View view) {
-        return null;
+        return new BaseUltimateViewHolder(view);
     }
 
     @Override
@@ -251,7 +251,7 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     @Override
     public long generateHeaderId(int position) {
-        return -1;
+        return position;
     }
 
     @Override
@@ -374,4 +374,14 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
         void onHeaderLongClick(RecyclerView.ViewHolder viewHolder, int position);
 
     }
+
+    @Override
+    public long getItemId(int position) {
+        // return position; <- this is not stable!
+
+        // should returns stable value. IDs have to be kept the same value
+        // even after its position has been changed.
+        return position;
+    }
+
 }
