@@ -118,6 +118,26 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
         return new BaseUltimateViewHolder(view);
     }
 
+    /**
+     * requirement: ADVIEW
+     *
+     * @param view v
+     * @return holder for this ADVIEW
+     */
+    public BaseUltimateViewHolder getAdViewHolder(View view) {
+        return null;
+    }
+
+    /**
+     * requirement: CUSTOMVIEW
+     *
+     * @param view v
+     * @return v
+     */
+    public BaseUltimateViewHolder newCustomViewHolder(View view) {
+        return null;
+    }
+
     @Override
     public BaseUltimateViewHolder onCreateViewHolder(ViewGroup parent) {
 
