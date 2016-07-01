@@ -17,10 +17,14 @@ import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
 import com.zczczy.leo.mybaseapplication.items.BaseUltimateViewHolder;
 import com.zczczy.leo.mybaseapplication.items.ItemView;
 import com.zczczy.leo.mybaseapplication.listener.OttoBus;
+import com.zczczy.leo.mybaseapplication.model.BaseModelJson;
+import com.zczczy.leo.mybaseapplication.model.PagerResult;
+import com.zczczy.leo.mybaseapplication.model.TestModel;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +39,7 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     public VerticalAndHorizontal verticalAndHorizontal;
     protected SwipeItemManagerImpl mItemManger = new SwipeItemManagerImpl(this);
-    @Bean
-    OttoBus bus;
+
     boolean isRefresh;
     private List<T> items = new ArrayList<>();
     private int total = 0;
@@ -46,6 +49,9 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
     private int mLastPosition = 5;
     private OnItemClickListener<T> onItemClickListener;
     private OnItemLongClickListener<T> onItemLongClickListener;
+
+    @Bean
+    OttoBus bus;
 
     /**
      * 获取更多的数据
@@ -57,6 +63,24 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
     @Background
     public abstract void getMoreData(int pageIndex, int pageSize, boolean isRefresh, Object... objects);
 
+
+    @UiThread
+    protected void afterGetMoreData(BaseModelJson<PagerResult<T>> result) {
+        if (result == null) {
+            result = new BaseModelJson<>();
+        } else if (!result.Successful) {
+//            AndroidTool.showToast(context, result.Error);
+        } else {
+            if (isRefresh) {
+                clear();
+            }
+            setTotal(result.Data.RowCount);
+            if (result.Data.ListData.size() > 0) {
+                insertAll(result.Data.ListData, getItems().size());
+            }
+        }
+        bus.post(result);
+    }
 
     @Override
     public void onBindViewHolder(BaseUltimateViewHolder viewHolder, int position) {

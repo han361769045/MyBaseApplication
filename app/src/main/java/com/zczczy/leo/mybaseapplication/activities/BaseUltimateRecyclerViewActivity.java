@@ -1,6 +1,7 @@
 package com.zczczy.leo.mybaseapplication.activities;
 
 import android.graphics.Paint;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -26,7 +27,10 @@ import org.androidannotations.annotations.ViewById;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import in.srain.cube.views.ptr.PtrUIHandler;
 import in.srain.cube.views.ptr.header.MaterialHeader;
+import in.srain.cube.views.ptr.header.StoreHouseHeader;
+import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
 /**
  * Created by Leo on 2016/5/21.
@@ -53,6 +57,8 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     MaterialHeader materialHeader;
 
+    StoreHouseHeader storeHouseHeader;
+
     Paint paint = new Paint();
 
     boolean isRefresh;
@@ -63,32 +69,33 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         ultimateRecyclerView.setHasFixedSize(false);
         linearLayoutManager = new LinearLayoutManager(this);
         gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        //设置 layoutManger
+        verticalItem();
+
+        //设置视差header
+        enableParallaxHeader();
 
         //设置空视图
         enableEmptyViewPolicy();
 
         //启用加载更多
         enableLoadMore();
-        //设置 layoutManger
-        verticalItem();
-
-        //设置视差header
-//        enableParallaxHeader();
-
 
         //获取数据
         afterLoadMore();
-        //启用刷新
-        ultimateRecyclerView.setCustomSwipeToRefresh();
+
         //设置 Material下拉刷新
         refreshingMaterial();
+//        refreshingStringArray();
 
-        //设置线
+//        ultimateRecyclerView.setItemViewCacheSize();
+        setItemDecoration(35, 35);
+    }
+
+    void setItemDecoration(int leftMargin, int rightMargin) {
         paint.setStrokeWidth(1);
         paint.setColor(line_color);
-        ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).margin(35).paint(paint).build());
-//        ultimateRecyclerView.setItemViewCacheSize();
-
+        ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).margin(leftMargin, rightMargin).paint(paint).build());
     }
 
     //线性布局
@@ -124,15 +131,33 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
 
     /**
-     * 设置 下拉刷新
+     * 设置默认的 下拉刷新
+     */
+    void defaultOnRefresh() {
+        ultimateRecyclerView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRefresh = true;
+                pageIndex = 1;
+                afterLoadMore();
+            }
+        });
+    }
+
+
+    /**
+     * 设置 Material 下拉刷新
      */
     void refreshingMaterial() {
+        //启用刷新
+        ultimateRecyclerView.setCustomSwipeToRefresh();
         materialHeader = new MaterialHeader(this);
         int[] colors = getResources().getIntArray(R.array.google_colors);
         materialHeader.setColorSchemeColors(colors);
         materialHeader.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
         materialHeader.setPadding(0, 15, 0, 10);
         materialHeader.setPtrFrameLayout(ultimateRecyclerView.mPtrFrameLayout);
+        ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(storeHouseHeader);
         ultimateRecyclerView.mPtrFrameLayout.autoRefresh(false);
         ultimateRecyclerView.mPtrFrameLayout.setHeaderView(materialHeader);
         ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(materialHeader);
@@ -143,14 +168,95 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
             }
 
             @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
                 isRefresh = true;
                 pageIndex = 1;
-                ultimateRecyclerView.setRefreshing(false);
-                ultimateRecyclerView.disableLoadmore();
                 afterLoadMore();
             }
         });
+    }
+
+
+    void refreshingStringArray() {
+        ultimateRecyclerView.setCustomSwipeToRefresh();
+        storeHouseHeader = new StoreHouseHeader(this);
+        storeHouseHeader.setPadding(0, 15, 0, 0);
+
+        // using string array from resource xml file
+        storeHouseHeader.initWithStringArray(R.array.storehouse);
+        ultimateRecyclerView.mPtrFrameLayout.setDurationToCloseHeader(1500);
+        ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(materialHeader);
+        ultimateRecyclerView.mPtrFrameLayout.setHeaderView(storeHouseHeader);
+        ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(storeHouseHeader);
+        ultimateRecyclerView.mPtrFrameLayout.autoRefresh(false);
+
+//        // change header after loaded
+//        ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(new PtrUIHandler() {
+//
+//
+//            @Override
+//            public void onUIReset(PtrFrameLayout frame) {
+//
+//            }
+//
+//            @Override
+//            public void onUIRefreshPrepare(PtrFrameLayout frame) {
+//
+//            }
+//
+//            @Override
+//            public void onUIRefreshBegin(PtrFrameLayout frame) {
+//
+//            }
+//
+//            @Override
+//            public void onUIRefreshComplete(PtrFrameLayout frame) {
+//
+//            }
+//
+//            @Override
+//            public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+//
+//            }
+//        });
+
+        ultimateRecyclerView.mPtrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                isRefresh = true;
+                pageIndex = 1;
+                afterLoadMore();
+            }
+        });
+    }
+
+    void refreshingString() {
+        ultimateRecyclerView.setCustomSwipeToRefresh();
+        storeHouseHeader = new StoreHouseHeader(this);
+        storeHouseHeader.initWithString("loading");
+        ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(materialHeader);
+        ultimateRecyclerView.mPtrFrameLayout.setHeaderView(storeHouseHeader);
+        ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(storeHouseHeader);
+        ultimateRecyclerView.mPtrFrameLayout.autoRefresh(false);
+        ultimateRecyclerView.mPtrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                isRefresh = true;
+                pageIndex = 1;
+                afterLoadMore();
+            }
+        });
+
     }
 
     @Subscribe
@@ -158,6 +264,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         if (isRefresh) {
             linearLayoutManager.scrollToPosition(0);
             ultimateRecyclerView.mPtrFrameLayout.refreshComplete();
+            ultimateRecyclerView.setRefreshing(false);
             isRefresh = false;
             if (myAdapter.getItems().size() < myAdapter.getTotal()) {
                 if (!ultimateRecyclerView.isLoadMoreEnabled())
@@ -178,7 +285,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER_AND_LOARMORE);
         //    ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER);
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
-        ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_CLEAR_ALL);
+        ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
     }
 
 

@@ -38,25 +38,6 @@ public class TestAdapter extends BaseUltimateRecyclerViewAdapter<TestModel> {
         afterGetMoreData(result);
     }
 
-    @UiThread(delay = 0)
-    void afterGetMoreData(BaseModelJson<PagerResult<TestModel>> result) {
-        if (result == null) {
-            result = new BaseModelJson<>();
-        } else if (!result.Successful) {
-//            AndroidTool.showToast(context, result.Error);
-        } else {
-            if (isRefresh) {
-                clear();
-            }
-            setTotal(result.Data.RowCount);
-            if (result.Data.ListData.size() > 0) {
-                insertAll(result.Data.ListData, getItems().size());
-            }
-        }
-        bus.post(result);
-    }
-
-
     @Override
     protected View onCreateItemView(ViewGroup parent) {
         return TestItemView_.build(parent.getContext());
