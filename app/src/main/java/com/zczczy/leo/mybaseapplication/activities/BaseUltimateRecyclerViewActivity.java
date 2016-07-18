@@ -90,6 +90,8 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
 //        ultimateRecyclerView.setItemViewCacheSize();
         setItemDecoration(35, 35);
+
+        ultimateRecyclerView.setAdapter(myAdapter);
     }
 
     void setItemDecoration(int leftMargin, int rightMargin) {
@@ -102,14 +104,14 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     void verticalItem() {
         myAdapter.verticalAndHorizontal = BaseUltimateRecyclerViewAdapter.VerticalAndHorizontal.Vertical;
         ultimateRecyclerView.setLayoutManager(linearLayoutManager);
-        ultimateRecyclerView.setAdapter(myAdapter);
+
     }
 
     //网格布局
     void horizontalItem() {
         myAdapter.verticalAndHorizontal = BaseUltimateRecyclerViewAdapter.VerticalAndHorizontal.Horizontal;
         ultimateRecyclerView.setLayoutManager(gridLayoutManager);
-        ultimateRecyclerView.setAdapter(myAdapter);
+//        ultimateRecyclerView.setAdapter(myAdapter);
     }
 
     abstract void afterLoadMore();
@@ -322,6 +324,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
             }
         });
         ultimateRecyclerView.reenableLoadmore();
+        myAdapter.executeInternalFootViewActionQueue();
 
     }
 

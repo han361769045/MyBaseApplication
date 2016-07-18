@@ -19,12 +19,16 @@ import com.zczczy.leo.mybaseapplication.items.ItemView;
 import com.zczczy.leo.mybaseapplication.listener.OttoBus;
 import com.zczczy.leo.mybaseapplication.model.BaseModelJson;
 import com.zczczy.leo.mybaseapplication.model.PagerResult;
-import com.zczczy.leo.mybaseapplication.model.TestModel;
+import com.zczczy.leo.mybaseapplication.rest.MyErrorHandler;
+import com.zczczy.leo.mybaseapplication.rest.MyRestClient;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
 import org.androidannotations.annotations.UiThread;
+import org.androidannotations.rest.spring.annotations.RestService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +43,6 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     public VerticalAndHorizontal verticalAndHorizontal;
     protected SwipeItemManagerImpl mItemManger = new SwipeItemManagerImpl(this);
-
-    boolean isRefresh;
     private List<T> items = new ArrayList<>();
     private int total = 0;
     private boolean isFirstOnly = true;
@@ -52,6 +54,22 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     @Bean
     OttoBus bus;
+
+    @RootContext
+    Context context;
+
+    @RestService
+    MyRestClient myRestClient;
+
+    @Bean
+    MyErrorHandler myErrorHandler;
+
+    boolean isRefresh;
+
+    @AfterInject
+    void afterBaseInject() {
+        myRestClient.setRestErrorHandler(myErrorHandler);
+    }
 
     /**
      * 获取更多的数据
@@ -140,8 +158,10 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     @Override
     public BaseUltimateViewHolder onCreateViewHolder(ViewGroup parent) {
-
         final View view = onCreateItemView(parent);
+        // //修正 item不充满
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        view.setLayoutParams(params);
         final BaseUltimateViewHolder baseViewHolder = new BaseUltimateViewHolder(view);
         SwipeLayout swipeLayout = baseViewHolder.swipeLayout;
         if (swipeLayout != null) {
@@ -273,7 +293,6 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
                 }
             });
         }
-
     }
 
 
