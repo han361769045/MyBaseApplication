@@ -1,4 +1,4 @@
-package com.zczczy.leo.mybaseapplication.activities;
+package com.luleo.leolibrary.activities;
 
 import android.graphics.Paint;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,15 +9,15 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.luleo.leolibrary.R;
+import com.luleo.leolibrary.adapters.BaseUltimateRecyclerViewAdapter;
+import com.luleo.leolibrary.listener.OttoBus;
+import com.luleo.leolibrary.model.BaseModel;
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
 import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.squareup.otto.Subscribe;
-import com.zczczy.leo.mybaseapplication.R;
-import com.zczczy.leo.mybaseapplication.adapters.BaseUltimateRecyclerViewAdapter;
-import com.zczczy.leo.mybaseapplication.listener.OttoBus;
-import com.zczczy.leo.mybaseapplication.model.BaseModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -33,7 +33,7 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by Leo on 2016/5/21.
  */
-@EActivity(R.layout.activity_ultimate_recycler_view)
+@EActivity()
 public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     @ViewById
@@ -293,13 +293,13 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
      * 设置 启用 ParallaxHeader（视差header）
      */
     void enableParallaxHeader() {
-        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
-        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
-            @Override
-            public void onParallaxScroll(float percentage, float offset, View parallax) {
-
-            }
-        });
+//        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
+//        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
+//            @Override
+//            public void onParallaxScroll(float percentage, float offset, View parallax) {
+//
+//            }
+//        });
     }
 
     void enableLoadMore() {

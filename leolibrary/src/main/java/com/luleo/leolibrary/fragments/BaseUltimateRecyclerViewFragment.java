@@ -1,4 +1,4 @@
-package com.zczczy.leo.mybaseapplication.activities;
+package com.luleo.leolibrary.fragments;
 
 import android.graphics.Paint;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -7,21 +7,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.luleo.leolibrary.R;
+import com.luleo.leolibrary.adapters.BaseUltimateRecyclerViewAdapter;
+import com.luleo.leolibrary.listener.OttoBus;
+import com.luleo.leolibrary.model.BaseModel;
+import com.luleo.leolibrary.viewgroup.MyTitleBar;
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
 import com.marshalchen.ultimaterecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
 import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.squareup.otto.Subscribe;
-import com.zczczy.leo.mybaseapplication.R;
-import com.zczczy.leo.mybaseapplication.adapters.BaseUltimateRecyclerViewAdapter;
-import com.zczczy.leo.mybaseapplication.listener.OttoBus;
-import com.zczczy.leo.mybaseapplication.model.BaseModel;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
-import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -33,8 +33,8 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by Leo on 2016/5/21.
  */
-@EActivity(R.layout.activity_ultimate_recycler_view)
-public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
+@EFragment()
+public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
 
     @ViewById
     CustomUltimateRecyclerview ultimateRecyclerView;
@@ -47,17 +47,20 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     @Bean
     OttoBus bus;
 
+    @ViewById
+    MyTitleBar myTitleBar;
+
     LinearLayoutManager linearLayoutManager;
 
     GridLayoutManager gridLayoutManager;
 
     int pageIndex = 1;
 
+    Paint paint = new Paint();
+
     MaterialHeader materialHeader;
 
     StoreHouseHeader storeHouseHeader;
-
-    Paint paint = new Paint();
 
     boolean isRefresh;
 
@@ -65,8 +68,8 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     void afterRecyclerView() {
         bus.register(this);
         ultimateRecyclerView.setHasFixedSize(false);
-        linearLayoutManager = new LinearLayoutManager(this);
-        gridLayoutManager = new GridLayoutManager(this, 2, LinearLayoutManager.VERTICAL, false);
+        linearLayoutManager = new LinearLayoutManager(getActivity());
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2, LinearLayoutManager.VERTICAL, false);
         //设置 layoutManger
         verticalItem();
 
@@ -95,7 +98,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     void setItemDecoration(int leftMargin, int rightMargin) {
         paint.setStrokeWidth(1);
         paint.setColor(line_color);
-        ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this).margin(leftMargin, rightMargin).paint(paint).build());
+        ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).margin(leftMargin, rightMargin).paint(paint).build());
     }
 
     //线性布局
@@ -120,7 +123,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
      * @param rv
      */
     void configLinearLayoutManager(UltimateRecyclerView rv) {
-        ScrollSmoothLineaerLayoutManager mgm = new ScrollSmoothLineaerLayoutManager(this, LinearLayoutManager.VERTICAL, false, 300);
+        ScrollSmoothLineaerLayoutManager mgm = new ScrollSmoothLineaerLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false, 300);
         rv.setLayoutManager(mgm);
     }
 
@@ -151,7 +154,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     void refreshingMaterial() {
         //启用刷新
         ultimateRecyclerView.setCustomSwipeToRefresh();
-        materialHeader = new MaterialHeader(this);
+        materialHeader = new MaterialHeader(getActivity());
         int[] colors = getResources().getIntArray(R.array.google_colors);
         materialHeader.setColorSchemeColors(colors);
         materialHeader.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
@@ -179,7 +182,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     void refreshingStringArray() {
         ultimateRecyclerView.setCustomSwipeToRefresh();
-        storeHouseHeader = new StoreHouseHeader(this);
+        storeHouseHeader = new StoreHouseHeader(getActivity());
         storeHouseHeader.setPadding(0, 15, 0, 0);
 
         // using string array from resource xml file
@@ -237,7 +240,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     void refreshingString() {
         ultimateRecyclerView.setCustomSwipeToRefresh();
-        storeHouseHeader = new StoreHouseHeader(this);
+        storeHouseHeader = new StoreHouseHeader(getActivity());
         storeHouseHeader.initWithString("loading");
         ultimateRecyclerView.mPtrFrameLayout.removePtrUIHandler(materialHeader);
         ultimateRecyclerView.mPtrFrameLayout.setHeaderView(storeHouseHeader);
@@ -293,13 +296,13 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
      * 设置 启用 ParallaxHeader（视差header）
      */
     void enableParallaxHeader() {
-        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
-        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
-            @Override
-            public void onParallaxScroll(float percentage, float offset, View parallax) {
-
-            }
-        });
+//        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
+//        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
+//            @Override
+//            public void onParallaxScroll(float percentage, float offset, View parallax) {
+//
+//            }
+//        });
     }
 
     void enableLoadMore() {
@@ -309,7 +312,6 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
             public void loadMore(int itemsCount, final int maxLastVisiblePosition) {
                 if (myAdapter.getItems().size() >= myAdapter.getTotal()) {
 //                    AndroidTool.showToast(BaseUltimateRecyclerViewActivity.this, "没有更多的数据了！~");
-                    Toast.makeText(BaseUltimateRecyclerViewActivity.this, "没有更多的数据了", Toast.LENGTH_SHORT).show();
                     ultimateRecyclerView.disableLoadmore();
 //                    myAdapter.notifyItemRemoved(itemsCount > 0 ? itemsCount - 1 : 0);
                 } else {
@@ -323,9 +325,12 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     }
 
     @Override
-    public void finish() {
-        bus.unregister(this);
-        super.finish();
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden) {
+            bus.unregister(this);
+        } else {
+            bus.register(this);
+        }
     }
-
 }

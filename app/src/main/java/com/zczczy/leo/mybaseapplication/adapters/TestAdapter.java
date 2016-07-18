@@ -22,7 +22,7 @@ public class TestAdapter extends BaseUltimateRecyclerViewAdapter<TestModel> {
     public void getMoreData(int pageIndex, int pageSize, boolean isRefresh, Object... objects) {
         this.isRefresh = isRefresh;
         BaseModelJson<PagerResult<TestModel>> result =
-                myRestClient.getGoodsInfoLikeWord(pageIndex, pageSize,"", "1");
+                myRestClient.getGoodsInfoLikeWord(pageIndex, pageSize,"111", "1");
         afterGetMoreData(result);
     }
 
