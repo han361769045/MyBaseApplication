@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.SystemService;
 import org.androidannotations.annotations.res.ColorRes;
-import org.androidannotations.annotations.res.StringRes;
 
 /**
  * Created by Leo on 2016/4/27.
@@ -21,14 +20,14 @@ public abstract class BaseFragment extends Fragment {
     @SystemService
     LayoutInflater layoutInflater;
 
-    @StringRes
-    String no_net;
+//    @StringRes
+//    String no_net;
 
     @ColorRes
     int line_color;
 
-    @StringRes
-    String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
+//    @StringRes
+//    String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
 
 
     @Override
