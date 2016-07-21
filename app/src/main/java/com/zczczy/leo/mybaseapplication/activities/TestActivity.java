@@ -1,5 +1,6 @@
 package com.zczczy.leo.mybaseapplication.activities;
 
+import com.luleo.baselibrary.activities.BaseUltimateRecyclerViewActivity;
 import com.zczczy.leo.mybaseapplication.R;
 import com.zczczy.leo.mybaseapplication.adapters.TestAdapter;
 import com.zczczy.leo.mybaseapplication.model.TestModel;
@@ -26,7 +27,7 @@ public class TestActivity extends BaseUltimateRecyclerViewActivity<TestModel> {
 
 
     @Override
-    void afterLoadMore() {
+    public void afterLoadMore() {
         myAdapter.getMoreData(pageIndex, 10, isRefresh);
     }
 }

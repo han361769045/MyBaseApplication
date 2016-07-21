@@ -1,7 +1,10 @@
 package com.zczczy.leo.mybaseapplication.rest;
 
-import com.zczczy.leo.mybaseapplication.model.BaseModelJson;
-import com.zczczy.leo.mybaseapplication.model.PagerResult;
+import com.luleo.baselibrary.model.BaseModelJson;
+import com.luleo.baselibrary.model.PagerResult;
+import com.luleo.baselibrary.rest.MyInterceptor;
+import com.luleo.baselibrary.rest.MyOkHttpClientHttpRequestFactory;
+import com.luleo.baselibrary.rest.MyResponseErrorHandlerBean;
 import com.zczczy.leo.mybaseapplication.model.TestModel;
 
 import org.androidannotations.rest.spring.annotations.Get;

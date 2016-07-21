@@ -4,12 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.zczczy.leo.mybaseapplication.items.TestItemView_;
-import com.zczczy.leo.mybaseapplication.model.BaseModelJson;
-import com.zczczy.leo.mybaseapplication.model.PagerResult;
+import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
+import com.luleo.baselibrary.model.BaseModelJson;
+import com.luleo.baselibrary.model.PagerResult;
 import com.zczczy.leo.mybaseapplication.model.TestModel;
+import com.zczczy.leo.mybaseapplication.rest.MyRestClient;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.rest.spring.annotations.RestService;
 
 /**
  * Created by Leo on 2016/5/27.
@@ -17,12 +19,14 @@ import org.androidannotations.annotations.EBean;
 @EBean
 public class TestAdapter extends BaseUltimateRecyclerViewAdapter<TestModel> {
 
+    @RestService
+    MyRestClient myRestClient;
 
     @Override
     public void getMoreData(int pageIndex, int pageSize, boolean isRefresh, Object... objects) {
         this.isRefresh = isRefresh;
         BaseModelJson<PagerResult<TestModel>> result =
-                myRestClient.getGoodsInfoLikeWord(pageIndex, pageSize,"", "1");
+                myRestClient.getGoodsInfoLikeWord(pageIndex, pageSize, "", "1");
         afterGetMoreData(result);
     }
 

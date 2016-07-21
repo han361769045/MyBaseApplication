@@ -6,6 +6,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.luleo.baselibrary.items.ItemView;
 import com.zczczy.leo.mybaseapplication.R;
 import com.zczczy.leo.mybaseapplication.model.TestModel;
 
