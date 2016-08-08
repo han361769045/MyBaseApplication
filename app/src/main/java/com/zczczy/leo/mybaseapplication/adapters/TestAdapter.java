@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
-import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModelJson;
 import com.luleo.baselibrary.model.PagerResult;
 import com.zczczy.leo.mybaseapplication.items.TestItemView_;
