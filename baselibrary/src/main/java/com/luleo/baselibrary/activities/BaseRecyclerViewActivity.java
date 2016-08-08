@@ -18,27 +18,25 @@ import org.androidannotations.annotations.ViewById;
 /**
  * Created by Leo on 2016/5/21.
  */
-@EActivity
+@EActivity(resName = "activity_recycler_view")
 public abstract class BaseRecyclerViewActivity<T> extends BaseActivity {
 
     @ViewById
-    MyTitleBar myTitleBar;
+    public MyTitleBar myTitleBar;
 
     @ViewById
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
-    LinearLayoutManager linearLayoutManager;
+    public LinearLayoutManager linearLayoutManager;
 
-    BaseRecyclerViewAdapter<T> myAdapter;
-
-    Paint paint = new Paint();
+    public BaseRecyclerViewAdapter<T> myAdapter;
 
     @Bean
-    MyErrorHandler myErrorHandler;
+    public MyErrorHandler myErrorHandler;
 
 
     @AfterViews
-    void afterRecyclerView() {
+    public void afterRecyclerView() {
         AndroidTool.showLoadDialog(this);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setHasFixedSize(false);

@@ -10,8 +10,8 @@ import org.androidannotations.annotations.EBean;
  * Created by leo on 2015/8/23.
  */
 
-@EBean(scope = EBean.Scope.Singleton)
-public class OttoBus extends Bus {
+@EBean
+public abstract class BaseOttoBus extends Bus {
 
     private final String TAG = this.getClass().getPackage().getName();
     public void register(Object object) {

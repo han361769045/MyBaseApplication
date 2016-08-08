@@ -35,7 +35,7 @@ public class MyTitleBar extends RelativeLayout {
 
     private CharSequence mTitleText, mLeftText, mRightText, mSearchHintText;
 
-    private TextView mLeftTextView, mRightTextView;
+    private TextView mLeftTextView, mRightTextView, mRightButtonViewBadge;
 
     private ImageButton mNavButtonView;
 
@@ -53,7 +53,7 @@ public class MyTitleBar extends RelativeLayout {
 
     private float mTitleSize, mLeftTextSize, mRightTextSize;
 
-    private int textSize = 15;
+    private int textSize = 14;
 
     private final AppCompatDrawableManager mDrawableManager;
 
@@ -116,7 +116,7 @@ public class MyTitleBar extends RelativeLayout {
         }
 
         if (a.hasValue(R.styleable.MyTitleBar_mRightTextSize)) {
-            setRightTextSize(a.getDimensionPixelSize(R.styleable.MyTitleBar_mRightTextSize, textSize));
+            setRightTextSize(a.getDimension(R.styleable.MyTitleBar_mRightTextSize, textSize));
         }
 
         final CharSequence title = a.getText(R.styleable.MyTitleBar_mTitle);
@@ -127,7 +127,7 @@ public class MyTitleBar extends RelativeLayout {
             setTitleTextColor(a.getColor(R.styleable.MyTitleBar_mTitleTextColor, 0xffffffff));
         }
         if (a.hasValue(R.styleable.MyTitleBar_mTitleSize)) {
-            setTitleSize(a.getDimensionPixelSize(R.styleable.MyTitleBar_mTitleSize, 20));
+            setTitleSize(a.getDimension(R.styleable.MyTitleBar_mTitleSize, 20));
         }
 
         final CharSequence searchHintText = a.getText(R.styleable.MyTitleBar_mSearchHintText);
@@ -368,6 +368,30 @@ public class MyTitleBar extends RelativeLayout {
     }
 
 
+    public void setBadgeCount(int count) {
+        ensureBadge();
+        mRightButtonViewBadge.setText(String.valueOf(count));
+        if (count > 0) {
+            mRightButtonViewBadge.setVisibility(VISIBLE);
+        } else {
+            mRightButtonViewBadge.setVisibility(GONE);
+        }
+
+    }
+
+    private void ensureBadge() {
+        if (mRightButtonViewBadge == null) {
+            mRightButtonViewBadge = new TextView(getContext());
+            mRightButtonViewBadge.setBackgroundColor(Color.RED);
+            mRightButtonViewBadge.setTextColor(Color.WHITE);
+            LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            mRightButtonViewBadge.setPadding(5, 5, 5, 5);
+            mRightButtonViewBadge.setLayoutParams(layoutParams);
+            addView(mRightButtonViewBadge, layoutParams);
+        }
+    }
+
     private void ensureRightButtonView() {
         if (mRightButtonView == null) {
             mRightButtonView = new ImageButton(getContext(), null, R.attr.toolbarNavigationButtonStyle);
@@ -434,13 +458,13 @@ public class MyTitleBar extends RelativeLayout {
     private void ensureLogoView() {
         if (logoView == null) {
             LayoutParams layoutParams = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
-            if (!mLogoShape) {
-//                logoView = new CircleImageView(getContext());
-                logoView = new ImageView(getContext(), null, R.attr.toolbarNavigationButtonStyle);
-                layoutParams = new LayoutParams(100, 100);
-            } else {
-                logoView = new ImageView(getContext(), null, R.attr.toolbarNavigationButtonStyle);
-            }
+//            if (!mLogoShape) {
+////                logoView = new CircleImageView(getContext());
+//                logoView = new ImageView(getContext(), null, R.attr.toolbarNavigationButtonStyle);
+//                layoutParams = new LayoutParams(100, 100);
+//            } else {
+//            }
+            logoView = new ImageView(getContext(), null, R.attr.toolbarNavigationButtonStyle);
             logoView.setId(R.id.m_logo);
             if (mLeftTextView != null) {
                 layoutParams.addRule(RelativeLayout.RIGHT_OF, R.id.m_left_text);
@@ -450,6 +474,7 @@ public class MyTitleBar extends RelativeLayout {
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             }
             layoutParams.addRule(RelativeLayout.CENTER_VERTICAL);
+            layoutParams.setMarginStart(30);
             logoView.setLayoutParams(layoutParams);
             addView(logoView, layoutParams);
         }
@@ -539,6 +564,7 @@ public class MyTitleBar extends RelativeLayout {
                 mRightTextView.setGravity(Gravity.CENTER);
                 mRightTextView.setEllipsize(TextUtils.TruncateAt.END);
                 mRightTextView.setId(R.id.m_right_text);
+                mRightTextView.setMaxEms(4);
                 if (mRightTextColor != 0) {
                     mRightTextView.setTextColor(mRightTextColor);
                 } else {
@@ -683,4 +709,17 @@ public class MyTitleBar extends RelativeLayout {
             mNavButtonView.setVisibility(GONE);
         }
     }
+
+    public void hideLogo() {
+        if (logoView != null) {
+            logoView.setVisibility(GONE);
+        }
+    }
+
+    public void showLogo() {
+        if (logoView != null) {
+            logoView.setVisibility(VISIBLE);
+        }
+    }
+
 }

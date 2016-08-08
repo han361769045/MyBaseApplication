@@ -1,20 +1,17 @@
 package com.luleo.baselibrary.fragments;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.luleo.baselibrary.R;
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
-import com.luleo.baselibrary.listener.OttoBus;
+import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModel;
-import com.luleo.baselibrary.tools.AndroidTool;
 import com.luleo.baselibrary.viewgroup.MyTitleBar;
 import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
@@ -23,7 +20,6 @@ import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalD
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -36,39 +32,38 @@ import in.srain.cube.views.ptr.header.StoreHouseHeader;
 /**
  * Created by Leo on 2016/5/21.
  */
-@EFragment
+@EFragment(resName = "activity_ultimate_recycler_view")
 public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
 
     @ViewById
-    MyTitleBar myTitleBar;
+    public MyTitleBar myTitleBar;
 
     @ViewById
-    CustomUltimateRecyclerview ultimateRecyclerView;
+    public CustomUltimateRecyclerview ultimateRecyclerView;
 
-    BaseUltimateRecyclerViewAdapter<T> myAdapter;
+    public BaseUltimateRecyclerViewAdapter<T> myAdapter;
 
     @ViewById
-    TextView empty_view;
+    public TextView empty_view;
 
-    @Bean
-    OttoBus bus;
+    public BaseOttoBus bus;
 
-    LinearLayoutManager linearLayoutManager;
+    public LinearLayoutManager linearLayoutManager;
 
-    GridLayoutManager gridLayoutManager;
+    public GridLayoutManager gridLayoutManager;
 
-    int pageIndex = 1;
+    public int pageIndex = 1;
 
-    MaterialHeader materialHeader;
+    public MaterialHeader materialHeader;
 
-    StoreHouseHeader storeHouseHeader;
+    public StoreHouseHeader storeHouseHeader;
 
-    Paint paint = new Paint();
+    public Paint paint = new Paint();
 
-    boolean isRefresh;
+    public boolean isRefresh;
 
     @AfterViews
-    void afterRecyclerView() {
+    public void afterRecyclerView() {
         bus.register(this);
         ultimateRecyclerView.setHasFixedSize(false);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -98,39 +93,39 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
         ultimateRecyclerView.setAdapter(myAdapter);
     }
 
-    void setItemDecoration(int leftMargin, int rightMargin) {
+    public  void setItemDecoration(int leftMargin, int rightMargin) {
         paint.setStrokeWidth(1);
         paint.setColor(line_color);
         ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).margin(leftMargin, rightMargin).paint(paint).build());
     }
 
     //线性布局
-    void verticalItem() {
+    public void verticalItem() {
         myAdapter.verticalAndHorizontal = BaseUltimateRecyclerViewAdapter.VerticalAndHorizontal.Vertical;
         ultimateRecyclerView.setLayoutManager(linearLayoutManager);
 
     }
 
     //网格布局
-    void horizontalItem() {
+    public void horizontalItem() {
         myAdapter.verticalAndHorizontal = BaseUltimateRecyclerViewAdapter.VerticalAndHorizontal.Horizontal;
         ultimateRecyclerView.setLayoutManager(gridLayoutManager);
 //        ultimateRecyclerView.setAdapter(myAdapter);
     }
 
-    abstract void afterLoadMore();
+    public abstract void afterLoadMore();
 
     /**
      * 配置管理器
      *
      * @param rv
      */
-    void configLinearLayoutManager(UltimateRecyclerView rv) {
+    public void configLinearLayoutManager(UltimateRecyclerView rv) {
         ScrollSmoothLineaerLayoutManager mgm = new ScrollSmoothLineaerLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false, 300);
         rv.setLayoutManager(mgm);
     }
 
-    void configStaggerLayoutManager(UltimateRecyclerView rv) {
+    public  void configStaggerLayoutManager(UltimateRecyclerView rv) {
         StaggeredGridLayoutManager gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(gaggeredGridLayoutManager);
     }
@@ -139,7 +134,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
     /**
      * 设置默认的 下拉刷新
      */
-    void defaultOnRefresh() {
+    public void defaultOnRefresh() {
         ultimateRecyclerView.setDefaultOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -154,11 +149,11 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
     /**
      * 设置 Material 下拉刷新
      */
-    void refreshingMaterial() {
+    public void refreshingMaterial() {
         //启用刷新
         ultimateRecyclerView.setCustomSwipeToRefresh();
         materialHeader = new MaterialHeader(getActivity());
-        int[] colors = getResources().getIntArray(R.array.google_colors);
+        int[] colors = {Color.RED,Color.GRAY,Color.BLUE};
         materialHeader.setColorSchemeColors(colors);
         materialHeader.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
         materialHeader.setPadding(0, 15, 0, 10);
@@ -183,7 +178,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
     }
 
 
-    void refreshingString() {
+    public void refreshingString() {
         ultimateRecyclerView.setCustomSwipeToRefresh();
         storeHouseHeader = new StoreHouseHeader(getActivity());
         storeHouseHeader.initWithString("loading");
@@ -229,18 +224,18 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
     /**
      * 设置EmptyView
      */
-    void enableEmptyViewPolicy() {
+    public void enableEmptyViewPolicy() {
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER_AND_LOARMORE);
         //    ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER);
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
-        ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
+//        ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
     }
 
 
     /**
      * 设置 启用 ParallaxHeader（视差header）
      */
-    void enableParallaxHeader() {
+    public void enableParallaxHeader() {
 //        ultimateRecyclerView.setParallaxHeader(getLayoutInflater().inflate(R.layout.parallax_recyclerview_header, ultimateRecyclerView.mRecyclerView, false));
 //        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
 //            @Override
@@ -250,8 +245,8 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
 //        });
     }
 
-    void enableLoadMore() {
-        ultimateRecyclerView.setLoadMoreView(R.layout.custom_bottom_progressbar);
+    public void enableLoadMore() {
+//        ultimateRecyclerView.setLoadMoreView(R.layout.custom_bottom_progressbar);
         ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int itemsCount, final int maxLastVisiblePosition) {

@@ -23,17 +23,17 @@ import org.springframework.util.StringUtils;
 public abstract class BaseFragment extends Fragment {
 
     @SystemService
-    LayoutInflater layoutInflater;
+    public LayoutInflater layoutInflater;
 
     @StringRes
-    String no_net;
+    public String no_net;
 
 
     @ColorRes
-    int line_color;
+    public int line_color;
 
     @StringRes
-    String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
+    public String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
 
 
     @Override

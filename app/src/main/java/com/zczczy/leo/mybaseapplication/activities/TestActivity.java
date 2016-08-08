@@ -3,6 +3,7 @@ package com.zczczy.leo.mybaseapplication.activities;
 import com.luleo.baselibrary.activities.BaseUltimateRecyclerViewActivity;
 import com.zczczy.leo.mybaseapplication.R;
 import com.zczczy.leo.mybaseapplication.adapters.TestAdapter;
+import com.zczczy.leo.mybaseapplication.listener.OttoBus;
 import com.zczczy.leo.mybaseapplication.model.TestModel;
 
 import org.androidannotations.annotations.AfterViews;
@@ -15,11 +16,16 @@ import org.androidannotations.annotations.EActivity;
 @EActivity(R.layout.activity_ultimate_recycler_view)
 public class TestActivity extends BaseUltimateRecyclerViewActivity<TestModel> {
 
-
     @Bean
     void setMyAdapter(TestAdapter myAdapter) {
         this.myAdapter = myAdapter;
     }
+
+    @Bean
+    void setOttoBus(OttoBus bus) {
+        this.bus = bus;
+    }
+
 
     @AfterViews
     void afterView() {

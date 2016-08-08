@@ -1,6 +1,7 @@
 package com.luleo.baselibrary.activities;
 
 import android.app.Activity;
+import android.graphics.Paint;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -20,28 +21,30 @@ import org.androidannotations.annotations.res.StringRes;
 public abstract class BaseActivity extends AppCompatActivity {
 
     @SystemService
-    InputMethodManager inputMethodManager;
+    public InputMethodManager inputMethodManager;
 
     @SystemService
-    ConnectivityManager connectivityManager;
+    public ConnectivityManager connectivityManager;
 
     @SystemService
-    LayoutInflater layoutInflater;
+    public LayoutInflater layoutInflater;
 
     @ColorRes
-    int line_color;
+    public int line_color;
+
+    public Paint paint = new Paint();
 
     @StringRes
-    String no_net;
-//
+    public String no_net;
+
     @StringRes
-    String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
+    public String empty_search, empty_order, empty_review, empty_no_review, empty_logistics;
 
 
     /**
      * 检查当前网络是否可用
      */
-    public boolean isNetworkAvailable(Activity activity) {
+    public boolean isNetworkAvailable() {
         // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
         if (connectivityManager == null) {
             return false;
@@ -71,11 +74,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     //隐藏软键盘
     void closeInputMethod(Activity activity) {
         /*隐藏软键盘*/
-        if (inputMethodManager != null) {
-            if (inputMethodManager.isActive()) {
-                if (activity.getCurrentFocus() != null) {
-                    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-                }
+        if (inputMethodManager.isActive()) {
+            if (activity.getCurrentFocus() != null) {
+                inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
             }
         }
     }

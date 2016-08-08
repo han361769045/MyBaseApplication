@@ -19,29 +19,29 @@ import org.androidannotations.annotations.ViewById;
 /**
  * Created by Leo on 2016/5/21.
  */
-@EFragment
+@EFragment(resName = "activity_recycler_view")
 public abstract class BaseRecyclerViewFragment<T> extends BaseFragment {
 
     @ViewById
-    MyTitleBar myTitleBar;
+    public MyTitleBar myTitleBar;
 
     @ViewById
-    RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     @Bean
-    MyErrorHandler myErrorHandler;
+    public MyErrorHandler myErrorHandler;
 
-    BaseRecyclerViewAdapter<T> myAdapter;
+    public BaseRecyclerViewAdapter<T> myAdapter;
 
-    GridLayoutManager gridLayoutManager;
+    public GridLayoutManager gridLayoutManager;
 
-    LinearLayoutManager linearLayoutManager;
+    public LinearLayoutManager linearLayoutManager;
 
-    Paint paint = new Paint();
+    public Paint paint = new Paint();
 
 
     @AfterViews
-    void afterRecyclerView() {
+    public void afterRecyclerView() {
         AndroidTool.showLoadDialog(this);
         gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -53,7 +53,7 @@ public abstract class BaseRecyclerViewFragment<T> extends BaseFragment {
     }
 
     //线性布局
-    void verticalItem() {
+    public void verticalItem() {
         recyclerView.setAdapter(null);
         myAdapter.verticalAndHorizontal = BaseRecyclerViewAdapter.VerticalAndHorizontal.Vertical;
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -61,7 +61,7 @@ public abstract class BaseRecyclerViewFragment<T> extends BaseFragment {
     }
 
     //网格布局
-    void horizontalItem() {
+    public  void horizontalItem() {
         recyclerView.setAdapter(null);
         myAdapter.verticalAndHorizontal = BaseRecyclerViewAdapter.VerticalAndHorizontal.Horizontal;
         recyclerView.setLayoutManager(gridLayoutManager);

@@ -12,7 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 import com.luleo.baselibrary.items.BaseUltimateViewHolder;
 import com.luleo.baselibrary.items.ItemView;
-import com.luleo.baselibrary.listener.OttoBus;
+import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModelJson;
 import com.luleo.baselibrary.model.PagerResult;
 import com.luleo.baselibrary.rest.MyErrorHandler;
@@ -47,14 +47,13 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
     private OnItemClickListener<T> onItemClickListener;
     private OnItemLongClickListener<T> onItemLongClickListener;
 
-    @Bean
-    protected OttoBus bus;
+    public BaseOttoBus bus;
 
     @RootContext
     protected Context context;
 
     @Bean
-    MyErrorHandler myErrorHandler;
+    protected MyErrorHandler myErrorHandler;
 
     protected boolean isRefresh;
 
@@ -67,7 +66,6 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
      */
     @Background
     public abstract void getMoreData(int pageIndex, int pageSize, boolean isRefresh, Object... objects);
-
 
     @UiThread
     protected void afterGetMoreData(BaseModelJson<PagerResult<T>> result) {
@@ -84,7 +82,9 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
                 insertAll(result.Data.ListData, getItems().size());
             }
         }
-        bus.post(result);
+        if (bus != null) {
+            bus.post(result);
+        }
     }
 
     @Override

@@ -38,14 +38,14 @@ public abstract class BaseRecyclerViewAdapter<T> extends RecyclerView.Adapter<Ba
     private DynamicHeight dynamicHeight;
 
     @StringRes
-    String no_net;
+    public String no_net;
 
     @Bean
-    MyErrorHandler myErrorHandler;
+    public MyErrorHandler myErrorHandler;
 
 
     @RootContext
-    Context context;
+    public Context context;
 
     @Override
     public BaseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
