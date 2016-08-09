@@ -18,7 +18,7 @@ apt {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.zczczy.leo.mybaseapplication"
@@ -66,6 +66,10 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'
     compile 'com.android.support:percent:24.1.1'
+    compile 'com.android.support:gridlayout-v7:24.1.1'
+    compile 'com.android.support:support-v4:24.1.1'
+
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
