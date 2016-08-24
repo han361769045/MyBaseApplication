@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
 
+
 /**
  * Created by leo on 2015/10/31.
  */

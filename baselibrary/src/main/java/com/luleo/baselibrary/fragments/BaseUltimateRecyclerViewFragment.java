@@ -261,7 +261,6 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
             }
         });
         ultimateRecyclerView.reenableLoadmore();
-        myAdapter.executeInternalFootViewActionQueue();
     }
 
     @Override
