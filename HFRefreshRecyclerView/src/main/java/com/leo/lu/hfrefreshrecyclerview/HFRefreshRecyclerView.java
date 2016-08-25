@@ -618,6 +618,7 @@ public class HFRefreshRecyclerView extends FrameLayout implements Scrollable {
      * @deprecated Use {@link #addOnScrollListener(RecyclerView.OnScrollListener)} and
      * {@link #removeOnScrollListener(RecyclerView.OnScrollListener)}
      */
+    @Deprecated
     public void setOnScrollListener(RecyclerView.OnScrollListener customOnScrollListener) {
         mRecyclerView.setOnScrollListener(customOnScrollListener);
     }
