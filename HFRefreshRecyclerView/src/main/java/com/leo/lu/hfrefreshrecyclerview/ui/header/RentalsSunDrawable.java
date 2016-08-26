@@ -92,7 +92,7 @@ public class RentalsSunDrawable extends Drawable implements Animatable {
     }
 
 
-    private void initiateDimens() {
+    private void  initiateDimens() {
         PtrLocalDisplay.init(mContext);
         mTotalDragDistance = PtrLocalDisplay.dp2px(120);
 

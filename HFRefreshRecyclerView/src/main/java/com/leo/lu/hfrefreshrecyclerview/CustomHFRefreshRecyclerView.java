@@ -71,4 +71,17 @@ public class CustomHFRefreshRecyclerView extends HFRefreshRecyclerView {
         mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
     }
 
+    public void refreshingRentalsSun() {
+        mPtrFrameLayout = (PtrFrameLayout) findViewById(R.id.store_house_ptr_frame);
+        mPtrFrameLayout.setResistance(1.7f);
+        mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
+        mPtrFrameLayout.setDurationToClose(200);
+        mPtrFrameLayout.setDurationToCloseHeader(1000);
+        mPtrFrameLayout.setPullToRefresh(false);
+        mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
+        mPtrFrameLayout.autoRefresh(false);
+        mPtrFrameLayout.setLoadingMinTime(1000);
+    }
+
+
 }

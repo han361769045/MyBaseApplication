@@ -12,6 +12,7 @@ import com.leo.lu.hfrefreshrecyclerview.CustomHFRefreshRecyclerView;
 import com.leo.lu.hfrefreshrecyclerview.HFRefreshRecyclerView;
 import com.leo.lu.hfrefreshrecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
 import com.leo.lu.hfrefreshrecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
+import com.leo.lu.hfrefreshrecyclerview.ui.header.RentalsSunHeaderView;
 import com.luleo.baselibrary.R;
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
 import com.luleo.baselibrary.listener.BaseOttoBus;
@@ -62,6 +63,8 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     public StoreHouseHeader storeHouseHeader;
 
+    public RentalsSunHeaderView header;
+
     public boolean isRefresh;
 
     @AfterInject
@@ -94,8 +97,9 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         afterLoadMore();
 
         //设置 Material下拉刷新
-        refreshingMaterial();
+//        refreshingMaterial();
 //        refreshingStringArray();
+        refreshingRentalsSun();
 
 //        ultimateRecyclerView.setItemViewCacheSize();
         setItemDecoration(35, 35);
@@ -147,6 +151,31 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         StaggeredGridLayoutManager gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(gaggeredGridLayoutManager);
     }
+
+    public void refreshingRentalsSun() {
+        //启用刷新
+        ultimateRecyclerView.refreshingRentalsSun();
+        header = new RentalsSunHeaderView(this);
+        header.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
+        header.setPadding(0, 15, 0, 10);
+        header.setUp(ultimateRecyclerView.mPtrFrameLayout);
+        ultimateRecyclerView.mPtrFrameLayout.setHeaderView(header);
+        ultimateRecyclerView.mPtrFrameLayout.addPtrUIHandler(header);
+        ultimateRecyclerView.mPtrFrameLayout.setPtrHandler(new PtrHandler() {
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame, content, header);
+            }
+
+            @Override
+            public void onRefreshBegin(PtrFrameLayout ptrFrameLayout) {
+                isRefresh = true;
+                pageIndex = 1;
+                afterLoadMore();
+            }
+        });
+    }
+
 
     /**
      * 设置 Material 下拉刷新
