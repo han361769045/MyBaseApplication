@@ -8,15 +8,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.leo.lu.hfrefreshrecyclerview.CustomHFRefreshRecyclerView;
+import com.leo.lu.hfrefreshrecyclerview.HFRefreshRecyclerView;
+import com.leo.lu.hfrefreshrecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
+import com.leo.lu.hfrefreshrecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.luleo.baselibrary.R;
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
 import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModel;
 import com.luleo.baselibrary.viewgroup.MyTitleBar;
-import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-import com.marshalchen.ultimaterecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
-import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterInject;
@@ -41,7 +41,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     public MyTitleBar myTitleBar;
 
     @ViewById(resName = "ultimate_recycler_view")
-    public CustomUltimateRecyclerview ultimateRecyclerView;
+    public CustomHFRefreshRecyclerView ultimateRecyclerView;
 
     public BaseUltimateRecyclerViewAdapter<T> myAdapter;
 
@@ -138,12 +138,12 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
      *
      * @param rv
      */
-    public void configLinearLayoutManager(UltimateRecyclerView rv) {
+    public void configLinearLayoutManager(HFRefreshRecyclerView rv) {
         ScrollSmoothLineaerLayoutManager mgm = new ScrollSmoothLineaerLayoutManager(this, LinearLayoutManager.VERTICAL, false, 300);
         rv.setLayoutManager(mgm);
     }
 
-    public void configStaggerLayoutManager(UltimateRecyclerView rv) {
+    public void configStaggerLayoutManager(HFRefreshRecyclerView rv) {
         StaggeredGridLayoutManager gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(gaggeredGridLayoutManager);
     }
@@ -231,7 +231,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER_AND_LOARMORE);
         //    ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_KEEP_HEADER);
         //  ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
-        ultimateRecyclerView.setEmptyView(R.layout.empty_view, UltimateRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
+        ultimateRecyclerView.setEmptyView(R.layout.empty_view, HFRefreshRecyclerView.EMPTY_SHOW_LOADMORE_ONLY);
     }
 
     /**
@@ -241,7 +241,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
     public void enableParallaxHeader(int layoutId) {
         View view = layoutInflater.inflate(layoutId, ultimateRecyclerView.mRecyclerView, false);
         ultimateRecyclerView.setParallaxHeader(view);
-        ultimateRecyclerView.setOnParallaxScroll(new UltimateRecyclerView.OnParallaxScroll() {
+        ultimateRecyclerView.setOnParallaxScroll(new HFRefreshRecyclerView.OnParallaxScroll() {
             @Override
             public void onParallaxScroll(float percentage, float offset, View parallax) {
 
@@ -251,7 +251,7 @@ public abstract class BaseUltimateRecyclerViewActivity<T> extends BaseActivity {
 
     public void enableLoadMore() {
         ultimateRecyclerView.setLoadMoreView(R.layout.custom_bottom_progressbar);
-        ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+        ultimateRecyclerView.setOnLoadMoreListener(new HFRefreshRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int itemsCount, final int maxLastVisiblePosition) {
                 if (myAdapter.getItems().size() >= myAdapter.getTotal()) {

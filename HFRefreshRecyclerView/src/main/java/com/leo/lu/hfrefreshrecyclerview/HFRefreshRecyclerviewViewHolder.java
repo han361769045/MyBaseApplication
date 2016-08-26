@@ -10,6 +10,7 @@ import com.leo.lu.hfrefreshrecyclerview.itemTouchHelper.ItemTouchHelperViewHolde
 import com.leo.lu.hfrefreshrecyclerview.swipe.SwipeLayout;
 
 
+
 /**
  * Created by MarshalChen on 15-6-2.
  * adding by Hesk 2016-2-29

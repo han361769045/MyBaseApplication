@@ -4,9 +4,9 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.widget.LinearLayout;
 
+import com.leo.lu.hfrefreshrecyclerview.itemTouchHelper.ItemTouchHelperViewHolder;
 import com.luleo.baselibrary.adapters.BaseRecyclerViewAdapter;
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
-import com.marshalchen.ultimaterecyclerview.itemTouchHelper.ItemTouchHelperViewHolder;
 
 /**
  * Created by Leo on 2016/4/27.

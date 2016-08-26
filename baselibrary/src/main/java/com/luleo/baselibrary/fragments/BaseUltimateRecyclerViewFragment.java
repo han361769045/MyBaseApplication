@@ -9,14 +9,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.TextView;
 
+import com.leo.lu.hfrefreshrecyclerview.CustomHFRefreshRecyclerView;
+import com.leo.lu.hfrefreshrecyclerview.HFRefreshRecyclerView;
+import com.leo.lu.hfrefreshrecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
+import com.leo.lu.hfrefreshrecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
 import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModel;
 import com.luleo.baselibrary.viewgroup.MyTitleBar;
-import com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview;
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerView;
-import com.marshalchen.ultimaterecyclerview.layoutmanagers.ScrollSmoothLineaerLayoutManager;
-import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.squareup.otto.Subscribe;
 
 import org.androidannotations.annotations.AfterViews;
@@ -39,7 +39,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
     public MyTitleBar myTitleBar;
 
     @ViewById
-    public CustomUltimateRecyclerview ultimateRecyclerView;
+    public CustomHFRefreshRecyclerView ultimateRecyclerView;
 
     public BaseUltimateRecyclerViewAdapter<T> myAdapter;
 
@@ -93,7 +93,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
         ultimateRecyclerView.setAdapter(myAdapter);
     }
 
-    public  void setItemDecoration(int leftMargin, int rightMargin) {
+    public void setItemDecoration(int leftMargin, int rightMargin) {
         paint.setStrokeWidth(1);
         paint.setColor(line_color);
         ultimateRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity()).margin(leftMargin, rightMargin).paint(paint).build());
@@ -120,12 +120,12 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
      *
      * @param rv
      */
-    public void configLinearLayoutManager(UltimateRecyclerView rv) {
+    public void configLinearLayoutManager(HFRefreshRecyclerView rv) {
         ScrollSmoothLineaerLayoutManager mgm = new ScrollSmoothLineaerLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false, 300);
         rv.setLayoutManager(mgm);
     }
 
-    public  void configStaggerLayoutManager(UltimateRecyclerView rv) {
+    public void configStaggerLayoutManager(HFRefreshRecyclerView rv) {
         StaggeredGridLayoutManager gaggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         rv.setLayoutManager(gaggeredGridLayoutManager);
     }
@@ -153,7 +153,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
         //启用刷新
         ultimateRecyclerView.setCustomSwipeToRefresh();
         materialHeader = new MaterialHeader(getActivity());
-        int[] colors = {Color.RED,Color.GRAY,Color.BLUE};
+        int[] colors = {Color.RED, Color.GRAY, Color.BLUE};
         materialHeader.setColorSchemeColors(colors);
         materialHeader.setLayoutParams(new PtrFrameLayout.LayoutParams(-1, -2));
         materialHeader.setPadding(0, 15, 0, 10);
@@ -247,7 +247,7 @@ public abstract class BaseUltimateRecyclerViewFragment<T> extends BaseFragment {
 
     public void enableLoadMore() {
 //        ultimateRecyclerView.setLoadMoreView(R.layout.custom_bottom_progressbar);
-        ultimateRecyclerView.setOnLoadMoreListener(new UltimateRecyclerView.OnLoadMoreListener() {
+        ultimateRecyclerView.setOnLoadMoreListener(new HFRefreshRecyclerView.OnLoadMoreListener() {
             @Override
             public void loadMore(int itemsCount, final int maxLastVisiblePosition) {
                 if (myAdapter.getItems().size() >= myAdapter.getTotal()) {

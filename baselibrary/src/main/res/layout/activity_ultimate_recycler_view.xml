@@ -13,20 +13,12 @@
         android:layout_height="50dp"
         android:minHeight="50dp" />
 
-    <com.marshalchen.ultimaterecyclerview.CustomUltimateRecyclerview
+    <com.leo.lu.hfrefreshrecyclerview.CustomHFRefreshRecyclerView
         android:id="@+id/ultimate_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:recyclerviewClipToPadding="true"
         app:recyclerviewEmptyView="@layout/empty_view"
         app:recyclerviewScrollbars="vertical" />
-
-    <!--<com.leo.lu.hfrefreshrecyclerview.CustomHFRefreshRecyclerView-->
-        <!--android:id="@+id/ultimate_recycler_view"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:recyclerviewClipToPadding="true"-->
-        <!--app:recyclerviewEmptyView="@layout/empty_view"-->
-        <!--app:recyclerviewScrollbars="vertical" />-->
 
 </LinearLayout>

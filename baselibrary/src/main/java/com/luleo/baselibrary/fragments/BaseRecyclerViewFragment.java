@@ -5,11 +5,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.leo.lu.hfrefreshrecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 import com.luleo.baselibrary.adapters.BaseRecyclerViewAdapter;
 import com.luleo.baselibrary.rest.MyErrorHandler;
 import com.luleo.baselibrary.tools.AndroidTool;
 import com.luleo.baselibrary.viewgroup.MyTitleBar;
-import com.marshalchen.ultimaterecyclerview.ui.divideritemdecoration.HorizontalDividerItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;

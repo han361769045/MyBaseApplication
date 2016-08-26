@@ -10,16 +10,17 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
+import com.leo.lu.hfrefreshrecyclerview.HFRefreshViewAdapter;
+import com.leo.lu.hfrefreshrecyclerview.swipe.SwipeItemManagerImpl;
+import com.leo.lu.hfrefreshrecyclerview.swipe.SwipeItemManagerInterface;
+import com.leo.lu.hfrefreshrecyclerview.swipe.SwipeLayout;
 import com.luleo.baselibrary.items.BaseUltimateViewHolder;
 import com.luleo.baselibrary.items.ItemView;
 import com.luleo.baselibrary.listener.BaseOttoBus;
 import com.luleo.baselibrary.model.BaseModelJson;
 import com.luleo.baselibrary.model.PagerResult;
 import com.luleo.baselibrary.rest.MyErrorHandler;
-import com.marshalchen.ultimaterecyclerview.UltimateViewAdapter;
-import com.marshalchen.ultimaterecyclerview.swipe.SwipeItemManagerImpl;
-import com.marshalchen.ultimaterecyclerview.swipe.SwipeItemManagerInterface;
-import com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout;
+import com.nineoldandroids.view.ViewHelper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
@@ -30,13 +31,12 @@ import org.androidannotations.annotations.UiThread;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.wasabeef.recyclerview.internal.ViewHelper;
 
 /**
  * Created by leo on 2015/10/31.
  */
 @EBean
-public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAdapter<BaseUltimateViewHolder> implements SwipeItemManagerInterface {
+public abstract class BaseUltimateRecyclerViewAdapter<T> extends HFRefreshViewAdapter<BaseUltimateViewHolder> implements SwipeItemManagerInterface {
     private DynamicHeight dynamicHeight;
     public VerticalAndHorizontal verticalAndHorizontal;
     protected SwipeItemManagerImpl mItemManger = new SwipeItemManagerImpl(this);
@@ -89,7 +89,7 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
 
     @Override
     public void onBindViewHolder(BaseUltimateViewHolder viewHolder, int position) {
-        if (getItemViewType(position) == UltimateViewAdapter.VIEW_TYPES.NORMAL) {
+        if (getItemViewType(position) == BaseUltimateRecyclerViewAdapter.VIEW_TYPES.NORMAL) {
             ItemView<T> itemView = (ItemView) viewHolder.itemView;
             itemView.init(items.get(customHeaderView != null ? position - 1 : position), this, viewHolder);
             if (viewHolder.swipeLayout != null) {
@@ -107,8 +107,6 @@ public abstract class BaseUltimateRecyclerViewAdapter<T> extends UltimateViewAda
                 anim.setDuration(300).start();
                 anim.setInterpolator(mInterpolator);
             }
-        } else {
-            ViewHelper.clear(viewHolder.itemView);
         }
     }
 

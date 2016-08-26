@@ -2,13 +2,13 @@ package com.luleo.baselibrary.items;
 
 import android.view.View;
 
-import com.marshalchen.ultimaterecyclerview.UltimateRecyclerviewViewHolder;
+import com.leo.lu.hfrefreshrecyclerview.HFRefreshRecyclerViewViewHolder;
 
 
 /**
  * Created by leo on 2015/10/31.
  */
-public class BaseUltimateViewHolder extends UltimateRecyclerviewViewHolder {
+public class BaseUltimateViewHolder extends HFRefreshRecyclerViewViewHolder {
 
 
     public BaseUltimateViewHolder(View itemView) {
