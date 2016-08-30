@@ -89,5 +89,5 @@ dependencies {
     apt "org.androidannotations:rest-spring:$AAVersion"
     compile project(':baselibrary')
     compile project(':HFRefreshRecyclerView')
-
+    compile 'com.github.lzyzsd:jsbridge:1.0.4'
 }

@@ -1,6 +1,9 @@
 package com.zczczy.leo.mybaseapplication.activities;
 
+import android.support.v7.widget.RecyclerView;
+
 import com.luleo.baselibrary.activities.BaseUltimateRecyclerViewActivity;
+import com.luleo.baselibrary.adapters.BaseUltimateRecyclerViewAdapter;
 import com.zczczy.leo.mybaseapplication.R;
 import com.zczczy.leo.mybaseapplication.adapters.TestAdapter;
 import com.zczczy.leo.mybaseapplication.listener.OttoBus;
@@ -29,6 +32,18 @@ public class TestActivity extends BaseUltimateRecyclerViewActivity<TestModel> {
 
     @AfterViews
     void afterView() {
+        myAdapter.setOnItemClickListener(new BaseUltimateRecyclerViewAdapter.OnItemClickListener<TestModel>() {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder, TestModel obj, int position) {
+                TestJsBridgeActivity_.intent(TestActivity.this).start();
+            }
+
+            @Override
+            public void onHeaderClick(RecyclerView.ViewHolder viewHolder, int position) {
+
+            }
+        });
+
     }
 
 
