@@ -3,6 +3,11 @@ apply plugin: 'com.neenbedankt.android-apt'
 def AAVersion = '4.1.0'
 def V7Version = '24.2.0'
 
+//获取当前系统的时间
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
+}
+
 apt {
     arguments {
         androidManifestFile variant.outputs[0]?.processResources?.manifestFile
@@ -18,28 +23,79 @@ apt {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
-
+    buildToolsVersion "24.0.2"
     defaultConfig {
         applicationId "com.zczczy.leo.mybaseapplication"
         minSdkVersion 18
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        // dex突破65535的限制
+        multiDexEnabled true
     }
+
+    signingConfigs {
+        debug {
+            // No debug config
+        }
+
+        release {
+//            storeFile file("../yourapp.keystore")
+//            storePassword "your password"
+//            keyAlias "your alias"
+//            keyPassword "your password"
+        }
+    }
+
     buildTypes {
         release {
+            applicationIdSuffix ".release"
             minifyEnabled false
+            manifestPlaceholders = [app_name: "我的应用"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
             minifyEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            manifestPlaceholders = [app_name: "我的应用测试"]
             // 显示Log
             buildConfigField "boolean", "LEO_DEBUG", "true"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
+    productFlavors {
+        wandoujia {
+        }
+
+        baidu {
+        }
+
+        c360 {
+        }
+
+        uc {
+        }
+
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [TEST_CHANNEL_VALUE: name]
+        }
+    }
+    //修改生成的apk名字，格式为 app名_版本号_打包时间_渠道名_release.apk
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def oldFile = output.outputFile
+            if (variant.buildType.name.equals('release')) {
+                def releaseApkName = "_v${defaultConfig.versionName}_${releaseTime()}_" + variant.productFlavors[0].name + '_release.apk'
+                output.outputFile = new File(oldFile.parent, releaseApkName)
+            }
+        }
+    }
+
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES.txt'
         exclude 'META-INF/LICENSE.txt'
@@ -52,11 +108,28 @@ android {
         exclude 'META-INF/dependencies.txt'
         exclude 'META-INF/LGPL2.1'
     }
-
     // 移除lint检查的error
     lintOptions {
         abortOnError false
     }
+}
+
+//配置打包签名
+File propFile = file('signing.properties');
+if (propFile.exists()) {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+    if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    android.buildTypes.release.signingConfig = null
 }
 
 dependencies {
@@ -68,7 +141,6 @@ dependencies {
     compile "com.android.support:percent:$V7Version"
     compile "com.android.support:gridlayout-v7:$V7Version"
     compile "com.android.support:support-v4:$V7Version"
-
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.nineoldandroids:library:2.4.0'
