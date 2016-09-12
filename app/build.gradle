@@ -162,4 +162,5 @@ dependencies {
     compile project(':baselibrary')
     compile project(':HFRefreshRecyclerView')
     compile 'com.github.lzyzsd:jsbridge:1.0.4'
+    compile 'com.beardedhen:androidbootstrap:2.3.0'
 }
