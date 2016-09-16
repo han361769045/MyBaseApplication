@@ -1,0 +1,26 @@
+//apply plugin: 'bintray-release'
+apply plugin: 'com.novoda.bintray-release'
+
+publish {
+    userOrg = 'ljq'
+    groupId = 'com.leo.lu.hfrefreshrecyclerview'
+    artifactId = 'hfrefreshrecyclerview'
+    version = project.VERSION_NAME
+    uploadName = 'hfrefreshrecyclerview'
+    description = "The super recycler for the menu"
+    website = 'https://github.com/han361769045/MyBaseApplication'
+    autoPublish = true
+    dryRun = false
+    issueTracker = "${website}/issues"
+    licences = [project.POM_LICENCE_NAME]
+    bintrayUser = userOrg
+}
+
+
+if (hasProperty('APIBKI')) {
+    publish.bintrayKey = property('APIBKI')
+} else {
+    publish.bintrayKey = '8e5b4272f5bccb6093ebac5109b9cdbdb201b40a'
+}
+
+apply plugin: 'maven'

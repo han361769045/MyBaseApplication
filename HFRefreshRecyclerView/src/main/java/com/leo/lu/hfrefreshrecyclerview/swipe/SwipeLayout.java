@@ -191,10 +191,8 @@ public class SwipeLayout extends FrameLayout {
 
     /**
      * bind multiple views with an
-     * {@link com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout.OnRevealListener}.
      *
      * @param childIds the view id.
-     * @param l        the {@link com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout.OnRevealListener}
      */
     public void addRevealListener(int[] childIds, OnRevealListener l) {
         for (int i : childIds)
@@ -1174,8 +1172,8 @@ public class SwipeLayout extends FrameLayout {
 
     /**
      * There are 2 diffirent show mode.
-     * {@link com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout.ShowMode}.PullOut and
-     * {@link com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout.ShowMode}.LayDown.
+     * {@link com.leo.lu.hfrefreshrecyclerview.swipe.SwipeLayout.ShowMode}.PullOut and
+     * {@link com.leo.lu.hfrefreshrecyclerview.swipe.SwipeLayout.ShowMode}.LayDown.
      *
      * @param mode na
      */
@@ -1236,7 +1234,7 @@ public class SwipeLayout extends FrameLayout {
     /**
      * get the open status.
      *
-     * @return {@link com.marshalchen.ultimaterecyclerview.swipe.SwipeLayout.Status} Open , Close or
+     * @return {@link com.leo.lu.hfrefreshrecyclerview.swipe.SwipeLayout.Status} Open , Close or
      * Middle.
      */
     public Status getOpenStatus() {

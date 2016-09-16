@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-def AAVersion = '4.1.0'
-def V7Version = '24.2.0'
 
 //获取当前系统的时间
 def releaseTime() {
@@ -22,14 +20,14 @@ apt {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.2"
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.zczczy.leo.mybaseapplication"
-        minSdkVersion 18
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode project.VERSION_CODE as int
+        versionName project.VERSION_NAME
         // dex突破65535的限制
         multiDexEnabled true
     }
@@ -134,14 +132,20 @@ if (propFile.exists()) {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:$V7Version"
-    compile "com.android.support:cardview-v7:$V7Version"
-    compile "com.android.support:recyclerview-v7:$V7Version"
-    compile "com.android.support:design:$V7Version"
-    compile "com.android.support:percent:$V7Version"
-    compile "com.android.support:gridlayout-v7:$V7Version"
-    compile "com.android.support:support-v4:$V7Version"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha6'
+    compile "org.androidannotations:androidannotations-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:androidannotations:${ANDROIDANNOTATIONS_VERSION}"
+    compile "org.androidannotations:ormlite-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:ormlite:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:otto:${ANDROIDANNOTATIONS_VERSION}"
+    compile "org.androidannotations:rest-spring-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:rest-spring:${ANDROIDANNOTATIONS_VERSION}"
+    compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:cardview-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:design:${SUPPORT_LIBRARY}"
+    compile "com.android.support:percent:${SUPPORT_LIBRARY}"
+    compile "com.android.support:gridlayout-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:support-v4:${SUPPORT_LIBRARY}"
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
@@ -152,15 +156,7 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.48'
     compile 'com.j256.ormlite:ormlite-core:4.48'
     compile 'com.squareup:otto:1.3.8'
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:ormlite-api:$AAVersion"
-    apt "org.androidannotations:ormlite:$AAVersion"
-    apt "org.androidannotations:otto:$AAVersion"
-    compile "org.androidannotations:rest-spring-api:$AAVersion"
-    apt "org.androidannotations:rest-spring:$AAVersion"
     compile project(':baselibrary')
     compile project(':HFRefreshRecyclerView')
-    compile 'com.github.lzyzsd:jsbridge:1.0.4'
     compile 'com.beardedhen:androidbootstrap:2.3.0'
 }

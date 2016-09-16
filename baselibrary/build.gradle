@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.neenbedankt.android-apt'
 def AAVersion = '4.1.0'
+//def V7Version = '23.4.0'
 def V7Version = '24.2.0'
 
 
@@ -22,14 +23,14 @@ apt {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
+    buildToolsVersion project.ANDROID_BUILD_TOOLS_VERSION
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 24
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION as int
+        targetSdkVersion Integer.parseInt(project.ANDROID_BUILD_TARGET_SDK_VERSION)
+        versionCode project.VERSION_CODE as int
+        versionName project.VERSION_NAME
     }
     buildTypes {
         release {
@@ -58,19 +59,19 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:ormlite-api:$AAVersion"
-    apt "org.androidannotations:ormlite:$AAVersion"
-    apt "org.androidannotations:otto:$AAVersion"
-    compile "org.androidannotations:rest-spring-api:$AAVersion"
-    apt "org.androidannotations:rest-spring:$AAVersion"
-    compile "com.android.support:appcompat-v7:$V7Version"
-    compile "com.android.support:cardview-v7:$V7Version"
-    compile "com.android.support:recyclerview-v7:$V7Version"
-    compile "com.android.support:design:$V7Version"
-    compile "com.android.support:percent:$V7Version"
-    compile "com.android.support:gridlayout-v7:$V7Version"
+    compile "org.androidannotations:androidannotations-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:androidannotations:${ANDROIDANNOTATIONS_VERSION}"
+    compile "org.androidannotations:ormlite-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:ormlite:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:otto:${ANDROIDANNOTATIONS_VERSION}"
+    compile "org.androidannotations:rest-spring-api:${ANDROIDANNOTATIONS_VERSION}"
+    apt "org.androidannotations:rest-spring:${ANDROIDANNOTATIONS_VERSION}"
+    compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:cardview-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:recyclerview-v7:${SUPPORT_LIBRARY}"
+    compile "com.android.support:design:${SUPPORT_LIBRARY}"
+    compile "com.android.support:percent:${SUPPORT_LIBRARY}"
+    compile "com.android.support:gridlayout-v7:${SUPPORT_LIBRARY}"
     compile 'com.squareup.okhttp:okhttp:2.7.5'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
