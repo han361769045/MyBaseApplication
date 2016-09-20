@@ -5,10 +5,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
 
@@ -22,20 +22,5 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    //Library configurations
-    PUBLISH_GROUP_ID = 'com.leo.lu.hfrefreshrecyclerview'
-    PUBLISH_ARTIFACT_ID = 'hfrefreshrecyclerview'
-    PUBLISH_VERSION = '1.0.0'
-    VERSION_CODE = 1
-    //your version
-
-    //Application
-    app_demo_versionCode = 1
-    app_demo_versionName = '1.0.0'
-
-    IS_UPLOADING = project.getGradle().startParameter.taskNames.any { it.contains('bintrayUpload') }
 }
 

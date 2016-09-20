@@ -82,7 +82,7 @@ android {
             flavor.manifestPlaceholders = [TEST_CHANNEL_VALUE: name]
         }
     }
-    //修改生成的apk名字，格式为 app名_版本号_打包时间_渠道名_release.apk
+//    修改生成的apk名字，格式为 app名_版本号_打包时间_渠道名_release.apk
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def oldFile = output.outputFile

@@ -1,8 +1,4 @@
 apply plugin: 'com.android.library'
-version = "1.0.0" // 修改为你的版本号
-def siteUrl = 'https://github.com/han361769045/MyBaseApplication' // 修改为你的项目的主页
-def gitUrl = 'https://github.com/han361769045/MyBaseApplication.git' // 修改为你的Git仓库的url
-group = 'com.leo.lu.hfrefreshrecyclerview'
 
 android {
     compileSdkVersion Integer.parseInt(project.ANDROID_BUILD_SDK_VERSION)
@@ -46,3 +42,29 @@ dependencies {
     compile "com.android.support:support-v4:${SUPPORT_LIBRARY}"
     compile 'in.srain.cube:ultra-ptr:1.0.11'
 }
+
+ext {
+    bintrayRepo = 'maven'////bintray
+    bintrayName = 'hfrefreshrecyclerview'//bintray
+
+    publishedGroupId = 'com.leo.lu.hfrefreshrecyclerview'
+    artifact = 'hfrefreshrecyclerview'
+
+    siteUrl = 'https://github.com/han361769045/MyBaseApplication'
+    gitUrl = 'https://github.com/han361769045/MyBaseApplication.git'
+
+    libraryVersion = '1.0.0'
+    libraryName = 'hfrefreshrecyclerview'
+    libraryDescription = 'A tool for Android'
+
+    developerId = 'LeoLu'
+    developerName = 'LeoLu'
+    developerEmail = '361769045@qq.com'
+
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+apply from:'https://raw.githubusercontent.com/Jude95/JCenter/master/install.gradle'
+apply from:'https://raw.githubusercontent.com/Jude95/JCenter/master/bintray.gradle'
